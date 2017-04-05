@@ -1,0 +1,25 @@
+{% extends "home/base.html" %}
+
+{% block title %}
+Home | {{ block.super }}
+{% endblock title %}
+
+
+{% block content %}
+{{ block.super }}
+<main>
+    <div class="row">
+        <div class="col s12">
+            <h1 class="flow-text center">About</h1>
+        </div>
+    </div>
+
+    {% for obj in about_qs %}
+    <div class="row">
+        <div class="col s12">
+            <p class="flow-text center">{{ obj.text }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</main>
+{% endblock content %}

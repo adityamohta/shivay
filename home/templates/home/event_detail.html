@@ -1,0 +1,77 @@
+{% extends "home/base.html" %}
+
+{% block title %}
+Home | {{ block.super }}
+{% endblock title %}
+
+
+{% block content %}
+{{ block.super }}
+<style>
+    .parallax-container {
+        height: 600px;
+    }
+</style>
+
+
+<main>
+
+    <!--<div class="carousel carousel-slider">-->
+        <!--<a class="carousel-item" href="#one!"><img src="http://lorempixel.com/800/400/food/1"></a>-->
+        <!--<a class="carousel-item" href="#two!"><img src="http://lorempixel.com/800/400/food/2"></a>-->
+        <!--<a class="carousel-item" href="#three!"><img src="http://lorempixel.com/800/400/food/3"></a>-->
+        <!--<a class="carousel-item" href="#four!"><img src="http://lorempixel.com/800/400/food/4"></a>-->
+    <!--</div>-->
+
+
+    <div class="row">
+        <div class="col s12">
+            <h1 class="flow-text center">{{ event.title }}</h1>
+        </div>
+    </div>
+
+    <div class="carousel carousel-slider" data-indicators="true">
+        {% for image in event.images.all %}
+            <a class="carousel-item" href="#one!"><img src="{{ image.url }}"></a>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <p class="flow-text left">
+                date of event : {{ event.organised_on }}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <p class="flow-text">
+                {{ event.text }}
+            </p>
+        </div>
+    </div>
+    {% if event.videos.exists %}
+    <div class="row">
+        <div class="col s12">
+            <h3 class="flow-text center">Videos</h3>
+            <div class="row">
+                {% for video in event.videos.all %}
+                <div class="col m6 s12">
+                    <div class="video-container">
+                        <iframe width="853" height="480" src="{{ video.url }}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</main>
+
+{% endblock content %}
+
+<script>
+    {% block jquery %}
+        $('.carousel.carousel-slider').carousel({fullWidth: true});
+    {% endblock jquery %}
+</script>
