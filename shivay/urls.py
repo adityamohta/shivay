@@ -22,7 +22,7 @@ from home.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', home, name='home'),
+    url(r'^$', Home.as_view(), name='home'),
     url(r'^events/$', events, name='events'),
     url(r'^events/(?P<pk>\d+)/$', event_detail, name='event_detail'),
     url(r'^about/$', about, name='about'),
