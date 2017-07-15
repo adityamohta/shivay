@@ -36,6 +36,7 @@ class Home(View):
     def get(self, *args, **kwargs):
         obj = self.get_object()
         context = dict(
+            home_image=obj.home_image,
             home_header=obj.home_header,
             home_text=obj.home_text,
             about_header=obj.about_header,
@@ -43,6 +44,7 @@ class Home(View):
             contact_text=obj.contact_text,
             email=obj.email,
             phone=obj.phone,
-            services=obj.services_set.all()
+            services=obj.services_set.all(),
+            events=obj.events_set.all()
         )
         return render(self.request, "index.html", context)

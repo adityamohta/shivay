@@ -1,11 +1,11 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.core.urlresolvers import reverse
 
 
 class Portfolio(models.Model):
     # Home
+    home_image = models.ImageField(upload_to="home/", blank=True, null=True)
     home_header = models.CharField(max_length=255, default="MAKE YOUR DREAM EVENT A REALITY")
     home_text = models.TextField(null=True, blank=True)
     # About
@@ -20,6 +20,24 @@ class Portfolio(models.Model):
     )
     email = models.EmailField(null=True, blank=True)
     phone = models.CharField(max_length=25)
+
+
+class Events(models.Model):
+    portfolio = models.ForeignKey(Portfolio)
+    title = models.CharField(max_length=255, default="Kota, Rajasthan")
+    category = models.CharField(max_length=255, default="Venue")
+    thumbnail = models.ImageField(
+        upload_to="events/thumbs/",
+        help_text="Width not more then 650 px",
+        null=True
+    )
+    image = models.ImageField(
+        upload_to="events/",
+        width_field="width_field",
+        height_field="height_field"
+    )
+    height_field = models.IntegerField(default=0)
+    width_field = models.IntegerField(default=0)
 
 
 class Services(models.Model):
