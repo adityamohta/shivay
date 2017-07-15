@@ -1,6 +1,7 @@
 appdirs==1.4.3
 Django==1.11.3
 django-recaptcha==1.2.1
+gunicorn==19.7.1
 olefile==0.44
 packaging==16.8
 Pillow==4.0.0
