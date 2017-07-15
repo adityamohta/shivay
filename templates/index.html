@@ -107,10 +107,10 @@
                 {% for service in services %}
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="service-box">
-{#                            <i class="fa fa-4x fa-diamond text-primary sr-icons"></i>#}
                             <img class="img-fluid sr-icons" src="{{ service.image.url }}" alt="">
                             <h3>{{ service.heading }}</h3>
-                            <p class="text-muted" onmouseleave='viewShortText({{ service.id }}, this)' onmouseenter='viewFullText({{ service.id }}, this)'>{{ service.text | truncatechars:100 }}</p>
+                            <p class="text-muted" >{{ service.text | truncatechars:100 }}</p>
+                            <button class="btn btn-default btn-xl sr-button" onclick="toggleServiceView(this)" data-toggle="false" data-service-id="{{ service.id }}">More</button>
                         </div>
                     </div>
                     {% cycle '' '' '' '</div><div class="row">' %}
@@ -118,7 +118,6 @@
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="service-box">
                             <i class="fa fa-4x fa-diamond text-primary sr-icons"></i>
-    {#                        <img class="img-fluid sr-icons" src="{% static 'img/portfolio/thumbnails/5.jpg' %}" alt="">#}
                             <h3>Sturdy Templates</h3>
                             <p class="text-muted">Our templates are updated regularly so they don't break.</p>
                         </div>
@@ -292,7 +291,7 @@
                 method: "GET",
                 url: "/api/service/" + service_id,
                 success: function (data) {
-                    $(element).text(data.text);
+                    element.text(data.text);
                 }
             });
         }
@@ -301,9 +300,23 @@
                 method: "GET",
                 url: "/api/service/" + service_id,
                 success: function (data) {
-                    $(element).text(data.text.substring(0, 100) + "...");
+                    element.text(data.text.substring(0, 100) + "...");
                 }
             });
+        }
+        function toggleServiceView(element){
+            var toggle = $(element).attr("data-toggle");
+            var service_id = $(element).attr("data-service-id");
+            if (toggle === "false") {
+                viewFullText(service_id, $(element).siblings("p"));
+                $(element).attr("data-toggle", "true");
+                $(element).text("LESS");
+            }
+            else {
+                viewShortText(service_id, $(element).siblings("p"));
+                $(element).attr("data-toggle", "false");
+                $(element).text("MORE");
+            }
         }
     </script>
 </body>

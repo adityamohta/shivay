@@ -9,6 +9,7 @@ class InlineServicesAdmin(admin.TabularInline):
 
 class PortfolioModelAdmin(admin.ModelAdmin):
     list_display = ["id", "home_header", "email", "phone"]
+    list_display_links = ["id", "home_header"]
     inlines = [InlineServicesAdmin]
 
     class Meta:
