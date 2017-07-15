@@ -5,3 +5,4 @@
 .idea
 nohup.out
 db.sqlite3
+shivay/settings/local.py
