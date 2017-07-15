@@ -1,75 +1,48 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from django.shortcuts import render, Http404
 from django.views.generic import View
 
-from home.models import *
-from .forms import ContactUsForm
+from home.models import Portfolio, Services
+
+
+class ServiceDetailAPIView(View):
+
+    def get_object(self, pk):
+        try:
+            obj = Services.objects.get(id=pk)
+            return obj
+        except:
+            raise Http404
+
+    def get(self, *args, **kwargs):
+        if self.request.is_ajax():
+            obj = self.get_object(kwargs["pk"])
+            response = {
+                "id": obj.id,
+                "text": obj.text
+            }
+            return JsonResponse(response, status=201)
+        raise Http404
 
 
 class Home(View):
 
+    def get_object(self):
+        qs = Portfolio.objects.all()
+        if qs.exists():
+            return qs.first()
+        raise Http404
+
     def get(self, *args, **kwargs):
-        self.request.session["color"] = "brown"
-        qs = Event.objects.all().order_by("-organised_on")
-
-        events_qs = qs[:6] if qs.count() > 6 else qs
-
-        gallery_qs = GalleryImage.objects.all()
-        context = {
-            "events": events_qs,
-            "gallery": gallery_qs
-        }
-        return render(self.request, "home/home.html", context)
-
-
-def home(request):
-    request.session["color"] = "brown"
-    qs = Event.objects.all().order_by("-organised_on")
-    events_qs = qs[:6] if qs.count() > 6 else qs
-
-    gallery_qs = GalleryImage.objects.all()
-    context = {
-        "events": events_qs,
-        "gallery": gallery_qs
-    }
-    return render(request, "home/home.html", context)
-
-
-def events(request):
-    request.session["color"] = "brown"
-    events_qs = Event.objects.all()
-    context = {
-        "events": events_qs
-    }
-    return render(request, "home/events.html", context)
-
-
-def event_detail(request, pk):
-    request.session["color"] = "brown"
-    event_obj = get_object_or_404(Event, id=pk)
-    context = {
-        "event": event_obj
-    }
-    return render(request, "home/event_detail.html", context)
-
-
-def about(request):
-    request.session["color"] = "brown"
-    qs = About.objects.all()
-    context = {
-        "about_qs": qs
-    }
-    return render(request, "home/about.html", context)
-
-
-def contact_us(request):
-    request.session["color"] = "brown"
-    contact_form = ContactUsForm(request.POST or None)
-    if contact_form.is_valid():
-        # print(contact_form.cleaned_data)
-        contact_form.save(commit=True)
-        return redirect('home')
-    context = {
-        "form": contact_form
-    }
-    return render(request, "home/contactus.html", context)
-
+        obj = self.get_object()
+        context = dict(
+            home_header=obj.home_header,
+            home_text=obj.home_text,
+            about_header=obj.about_header,
+            about_text=obj.about_text,
+            contact_text=obj.contact_text,
+            email=obj.email,
+            phone=obj.phone,
+            services=obj.services_set.all()
+        )
+        return render(self.request, "index.html", context)

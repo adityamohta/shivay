@@ -3,5 +3,4 @@
 *.py~
 */migrations/*
 .idea
-db.sqlite3
 nohup.out

@@ -1,39 +1,27 @@
 from django.contrib import admin
 
-from home.models import *
+from home.models import Portfolio, Services
 
 
-class ContactModelAdmin(admin.ModelAdmin):
-    list_display = ["text", "phone_number", "email", "timestamp"]
-
-    class Meta:
-        model = ContactUs
+class InlineServicesAdmin(admin.TabularInline):
+    model = Services
 
 
-class InlineEventImageAdmin(admin.TabularInline):
-    model = EventImage
-
-
-class InlineEventVideoAdmin(admin.TabularInline):
-    model = EventVideo
-
-
-class EventModelAdmin(admin.ModelAdmin):
-
-    inlines = [
-        InlineEventImageAdmin,
-        InlineEventVideoAdmin
-    ]
+class PortfolioModelAdmin(admin.ModelAdmin):
+    list_display = ["id", "home_header", "email", "phone"]
+    inlines = [InlineServicesAdmin]
 
     class Meta:
-        model = Event
+        model = Portfolio
 
 
-admin.site.register(WebsiteTheme)
-admin.site.register(About)
-admin.site.register(ContactUs, ContactModelAdmin)
-admin.site.register(EventImage)
-admin.site.register(EventVideo)
-admin.site.register(Event, EventModelAdmin)
-admin.site.register(GalleryImage)
-admin.site.register(HomeScreenDetail)
+class ServicesModelAdmin(admin.ModelAdmin):
+    list_display = ["id", "heading"]
+    list_display_links = ["id", "heading"]
+
+    class Meta:
+        model = Services
+
+
+admin.site.register(Portfolio, PortfolioModelAdmin)
+admin.site.register(Services, ServicesModelAdmin)

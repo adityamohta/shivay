@@ -18,18 +18,15 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from home.views import *
+from home.views import Home, ServiceDetailAPIView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', Home.as_view(), name='home'),
-    url(r'^events/$', events, name='events'),
-    url(r'^events/(?P<pk>\d+)/$', event_detail, name='event_detail'),
-    url(r'^about/$', about, name='about'),
-    url(r'^contact/$', contact_us, name='contact'),
+    url(r'^api/service/(?P<pk>\d+)/$', ServiceDetailAPIView.as_view(), name='api_service')
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
