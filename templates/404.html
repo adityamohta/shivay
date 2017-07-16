@@ -1,0 +1,54 @@
+{% load staticfiles %}
+<!DOCTYPE HTMl>
+<html>
+    <head>
+        <title>404</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}" type="text/css" media="all" />
+        <link href='http://fonts.googleapis.com/css?family=Strait' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <video poster="{% static 'img/404.png' %}" id="bgvid" playsinline autoplay muted loop>
+            <source src="{% static 'vid/error.mp4' %}" type="video/mp4">
+        </video>
+        <div id="polina">
+            <h1>Error 404</h1>
+            <p>we are looking for your page...but we can't find it</p>
+            <button>Pause</button>
+        </div>
+        <script>
+            var vid = document.getElementById("bgvid");
+            var pauseButton = document.querySelector("#polina button");
+
+            if (window.matchMedia('(prefers-reduced-motion)').matches) {
+                vid.removeAttribute("autoplay");
+                vid.pause();
+                pauseButton.innerHTML = "Paused";
+            }
+
+            function vidFade() {
+              vid.classList.add("stopfade");
+            }
+
+            vid.addEventListener('ended', function()
+            {
+            // only functional if "loop" is removed
+            vid.pause();
+            // to capture IE10
+            vidFade();
+            });
+
+            pauseButton.addEventListener("click", function() {
+              vid.classList.toggle("stopfade");
+              if (vid.paused) {
+                vid.play();
+                pauseButton.innerHTML = "Pause";
+              } else {
+                vid.pause();
+                pauseButton.innerHTML = "Paused";
+              }
+            })
+        </script>
+    </body>
+</html>    
+
